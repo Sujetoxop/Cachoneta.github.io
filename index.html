@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cachoneta FUT</title>
+
+    <style>
+        body {
+            text-align: center;
+            margin: 50px;
+            color: #333;
+            font-family: 'Arial', sans-serif;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        input {
+            width: 200px;
+            margin-bottom: 10px;
+            text-align: right;
+            padding: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #resultado {
+            color: green;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        #agradecimiento {
+            color: #4CAF50;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <label for="valorCompra">Valor de Compra:</label>
+    <input type="text" id="valorCompra" />
+
+    <label for="valorVenta">Valor de Venta Sugerido:</label>
+    <input type="text" id="valorVenta" readonly />
+
+    <label for="impuesto">Impuesto (5%):</label>
+    <input type="text" id="impuesto" readonly />
+
+    <label for="ganancia">Ganancia Minima (1%):</label>
+    <input type="text" id="ganancia" readonly />
+    
+    <div id="resultado"></div>
+    <div id="agradecimiento"></div>
+
+    <button onclick="calcularGanancia()">Calcular</button>
+
+    <script>
+        function calcularGanancia() {
+            // Obtener el valor de compra y venta
+            var valorCompra = parseFloat(document.getElementById("valorCompra").value);
+
+            // Calcular el impuesto (5%)
+            var impuesto = valorCompra * 0.05;
+            document.getElementById("impuesto").value = numberWithCommas(impuesto.toFixed(2));
+
+            // Calcular la ganancia mínima (1%)
+            var gananciaMinima = valorCompra * 0.01;
+            document.getElementById("ganancia").value = numberWithCommas(gananciaMinima.toFixed(2));
+
+            // Calcular el valor de venta sugerido
+            var valorVentaSugerido = valorCompra + impuesto + gananciaMinima;
+            document.getElementById("valorVenta").value = numberWithCommas(valorVentaSugerido.toFixed(2));
+
+            // Mostrar el resultado en el div
+            var resultadoDiv = document.getElementById("resultado");
+            resultadoDiv.innerHTML = "Venta sugerida con ganancia minima de " + numberWithCommas(gananciaMinima.toFixed(2)) + " (" + ((gananciaMinima / valorCompra) * 100).toFixed(2) + "%)!";
+            
+            // Mostrar el mensaje de agradecimiento
+            var agradecimientoDiv = document.getElementById("agradecimiento");
+            agradecimientoDiv.innerHTML = "Gracias por pasarte por aqui, Cachon. Saludos!";
+        }
+
+        // Función para agregar puntos de miles
+        function numberWithCommas(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+    </script>
+</body>
+</html>
