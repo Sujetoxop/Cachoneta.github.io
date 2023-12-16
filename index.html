@@ -13,6 +13,16 @@
             font-family: 'Arial', sans-serif;
         }
 
+        .calculator {
+            width: 300px;
+            margin: 0 auto 50px; /* Centra el bloque y agrega un margen en la parte inferior */
+            border: 2px solid #ccc;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            display: inline-block;
+        }
+
         label {
             display: block;
             margin: 10px 0;
@@ -20,7 +30,7 @@
         }
 
         input {
-            width: 200px;
+            width: calc(100% - 10px);
             margin-bottom: 10px;
             text-align: right;
             padding: 5px;
@@ -38,64 +48,81 @@
             cursor: pointer;
         }
 
-        #resultado {
-            color: green;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-
+        #resultado,
         #agradecimiento {
-            color: #4CAF50;
-            font-weight: bold;
             margin-top: 10px;
         }
     </style>
 </head>
 <body>
-    <label for="valorCompra">Valor de Compra:</label>
-    <input type="text" id="valorCompra" />
+    <div class="calculator">
+        <h2>Compra de Jugadores</h2>
+        <label for="valorCompra">Valor de Compra:</label>
+        <input type="text" id="valorCompra" />
 
-    <label for="valorVenta">Valor de Venta Sugerido:</label>
-    <input type="text" id="valorVenta" readonly />
+        <label for="valorVenta">Valor de Venta Sugerido:</label>
+        <input type="text" id="valorVenta" readonly />
 
-    <label for="impuesto">Impuesto (5%):</label>
-    <input type="text" id="impuesto" readonly />
+        <label for="impuesto">Impuesto (5%):</label>
+        <input type="text" id="impuesto" readonly />
 
-    <label for="ganancia">Ganancia Minima (1%):</label>
-    <input type="text" id="ganancia" readonly />
-    
-    <div id="resultado"></div>
-    <div id="agradecimiento"></div>
+        <label for="ganancia">Ganancia Mínima (1%):</label>
+        <input type="text" id="ganancia" readonly />
+        
+        <div id="resultado"></div>
+        <div id="agradecimiento"></div>
 
-    <button onclick="calcularGanancia()">Calcular</button>
+        <button onclick="calcularGanancia()">Calcular</button>
+    </div>
+
+    <div class="calculator">
+        <h2>Venta de Jugadores</h2>
+        <label for="valorVentaModificable">Valor de Venta:</label>
+        <input type="text" id="valorVentaModificable" />
+
+        <label for="impuestoVenta">Impuesto (5%):</label>
+        <input type="text" id="impuestoVenta" readonly />
+
+        <label for="gananciaVenta">Ganancia Después de Impuesto:</label>
+        <input type="text" id="gananciaVenta" readonly />
+
+        <button onclick="calcularVentaJugadores()">Calcular Venta de Jugadores</button>
+    </div>
 
     <script>
         function calcularGanancia() {
-            // Obtener el valor de compra y venta
             var valorCompra = parseFloat(document.getElementById("valorCompra").value);
 
-            // Calcular el impuesto (5%)
             var impuesto = valorCompra * 0.05;
             document.getElementById("impuesto").value = numberWithCommas(impuesto.toFixed(2));
 
-            // Calcular la ganancia mínima (1%)
             var gananciaMinima = valorCompra * 0.01;
             document.getElementById("ganancia").value = numberWithCommas(gananciaMinima.toFixed(2));
 
-            // Calcular el valor de venta sugerido
             var valorVentaSugerido = valorCompra + impuesto + gananciaMinima;
             document.getElementById("valorVenta").value = numberWithCommas(valorVentaSugerido.toFixed(2));
 
-            // Mostrar el resultado en el div
             var resultadoDiv = document.getElementById("resultado");
-            resultadoDiv.innerHTML = "Venta sugerida con ganancia minima de " + numberWithCommas(gananciaMinima.toFixed(2)) + " (" + ((gananciaMinima / valorCompra) * 100).toFixed(2) + "%)!";
+            resultadoDiv.innerHTML = "Venta sugerida con ganancia mínima de " + numberWithCommas(gananciaMinima.toFixed(2)) + " (" + ((gananciaMinima / valorCompra) * 100).toFixed(2) + "%)!";
             
-            // Mostrar el mensaje de agradecimiento
             var agradecimientoDiv = document.getElementById("agradecimiento");
-            agradecimientoDiv.innerHTML = "Gracias por pasarte por aqui, Cachon. Saludos!";
+            agradecimientoDiv.innerHTML = "Gracias por pasarte por aquí, Cachon. ¡Saludos!";
         }
 
-        // Función para agregar puntos de miles
+        function calcularVentaJugadores() {
+            var valorVentaModificable = parseFloat(document.getElementById("valorVentaModificable").value);
+
+            var impuestoVenta = valorVentaModificable * 0.05;
+            document.getElementById("impuestoVenta").value = numberWithCommas(impuestoVenta.toFixed(2));
+
+            var gananciaVenta = valorVentaModificable - impuestoVenta;
+            document.getElementById("gananciaVenta").value = numberWithCommas(gananciaVenta.toFixed(2));
+
+            // Utilizar el mismo mensaje de agradecimiento en ambas calculadoras
+            var agradecimientoDiv = document.getElementById("agradecimiento");
+            agradecimientoDiv.innerHTML = "Gracias por pasarte por aquí, Cachon. ¡Saludos!";
+        }
+
         function numberWithCommas(x) {
             return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
